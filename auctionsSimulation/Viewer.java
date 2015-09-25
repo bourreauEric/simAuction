@@ -54,7 +54,7 @@ public class Viewer extends SwingViewer {
 		// probing agents' location
 		agentsLocationProbe = new PropertyProbe<AbstractAgent, Dimension>(
 				MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP,
-				MySimulationModel.AGENT_ROLE, "location");
+				MySimulationModel.DSP_ROLE, "location");
 		addProbe(agentsLocationProbe);
 
 		// 3 : Now that the probes are added,

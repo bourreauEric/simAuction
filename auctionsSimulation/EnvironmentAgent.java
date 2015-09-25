@@ -42,7 +42,7 @@ public class EnvironmentAgent extends Watcher {
 		addProbe(new AgentsProbe(
 					MySimulationModel.MY_COMMUNITY,
 					MySimulationModel.SIMU_GROUP,
-					MySimulationModel.AGENT_ROLE, 
+					MySimulationModel.DSP_ROLE, 
 					"environment"));
 	}
 

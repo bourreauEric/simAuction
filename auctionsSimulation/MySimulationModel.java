@@ -35,7 +35,8 @@ public class MySimulationModel extends AbstractAgent{
 	// Organizational constants
 	public static final String MY_COMMUNITY="simu";
 	public static final String SIMU_GROUP="simu";
-	public static final String AGENT_ROLE = "agent";
+	public static final String PUB_ROLE = "pub";
+	public static final String DSP_ROLE = "dsp";
 	public static final String ENV_ROLE = "environment";
 	public static final String SCH_ROLE	= "scheduler";
 	public static final String	VIEWER_ROLE	= "viewer";
@@ -58,8 +59,11 @@ public class MySimulationModel extends AbstractAgent{
 		launchAgent(viewer,true);
 		
 		// 2 : launch some simulated agents
-		for (int i = 0; i < 10; i++) {
-			launchAgent(new SituatedAgent());
+		for (int i = 0; i < 1; i++) {
+			launchAgent(new PubAgent());
+		}
+		for (int i = 0; i < 2; i++) {
+			launchAgent(new DSPAgent());
 		}
 	}
 	

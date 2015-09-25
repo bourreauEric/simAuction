@@ -21,6 +21,12 @@ package auctionsSimulation;
 import java.awt.Dimension;
 
 import madkit.kernel.AbstractAgent;
+import madkit.kernel.Message;
+import madkit.message.StringMessage;
+
+import java.util.ArrayList;
+
+import com.sun.corba.se.impl.protocol.giopmsgheaders.ReplyMessage;
 
 public class DSPAgent extends AbstractAgent {
 	
@@ -35,29 +41,30 @@ public class DSPAgent extends AbstractAgent {
 	/**
 	 * agent's position
 	 */
-	private Dimension location = new Dimension();
-
+	private ArrayList<Dimension> locations = new ArrayList<Dimension>();
+	
 	/**
 	 * initialize my role and fields
 	 */
 	@Override
 	protected void activate() {
-		requestRole(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.AGENT_ROLE);
+		requestRole(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE);
 		Dimension envDim = environment.getDimension();
-		location.width = (int) (Math.random()*envDim.width);
-		location.height = (int) (Math.random()*envDim.height);
 	}
 	
 	/**
-	 * A non sense behavior, just moving around.
+	 *  Réponse à l'enchère
 	 */
 	@SuppressWarnings("unused")
-	private void doIt() {
-		Dimension envDim = environment.getDimension();
-		location.width += Math.random()*4 - 1;
-		location.height += Math.random()*4 - 1;
-		location.width %= envDim.width;
-		location.height %= envDim.height;
+	private void answerIt() {
+		StringMessage m = (StringMessage) nextMessage();
+	 	while(m != null) {
+	 		if (m.getContent() == "win") {
+	 			m.getConversationID();
+	 		} else {
+	 			sendReply(m, new StringMessage("answer "+((int)Math.random()*4)));
+	 		}
+	 		m = (StringMessage) nextMessage();
+	 	} 	
 	}
-
 }

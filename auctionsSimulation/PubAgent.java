@@ -19,8 +19,19 @@
 package auctionsSimulation;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import madkit.kernel.AbstractAgent;
+import madkit.kernel.AgentAddress;
+import madkit.kernel.ConversationID;
+import madkit.kernel.Message;
+import madkit.message.StringMessage;
+
+// VOCABULARY
+// ask
+// answer IntValue
+// win
 
 public class PubAgent extends AbstractAgent {
 	
@@ -31,33 +42,41 @@ public class PubAgent extends AbstractAgent {
 	 * by the environment agent itself: No need to instantiate anything here.
 	 */
 	private EnvironmentAgent environment;
+	private HashMap<ConversationID, Integer> encheres = new  HashMap<ConversationID, Integer>();
+	private HashMap<ConversationID, AgentAddress> encherisseurs = new  HashMap<ConversationID, AgentAddress>();
 	
-	/**
-	 * agent's position
-	 */
-	private Dimension location = new Dimension();
-
 	/**
 	 * initialize my role and fields
 	 */
 	@Override
 	protected void activate() {
-		requestRole(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.AGENT_ROLE);
-		Dimension envDim = environment.getDimension();
-		location.width = (int) (Math.random()*envDim.width);
-		location.height = (int) (Math.random()*envDim.height);
+		requestRole(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.PUB_ROLE);
 	}
 	
 	/**
 	 * A non sense behavior, just moving around.
 	 */
 	@SuppressWarnings("unused")
-	private void doIt() {
-		Dimension envDim = environment.getDimension();
-		location.width += Math.random()*4 - 1;
-		location.height += Math.random()*4 - 1;
-		location.width %= envDim.width;
-		location.height %= envDim.height;
+	private void askIt() {
+		Integer value,bestValue;
+		StringMessage m = (StringMessage) nextMessage();
+	 	while(m != null) {
+	 		if (m.getContent().startsWith("answer")) {
+	 			value = new Integer(Integer.parseInt(m.getContent().split(" ")[1]));
+	 			if (encheres.containsKey(m.getConversationID())) {
+		 		    bestValue = encheres.get(m.getConversationID());
+		 			if (bestValue < value) {
+		 				encheres.put(m.getConversationID(), value);
+		 				encherisseurs.put(m.getConversationID(), m.getSender()); 				
+		 			}
+	 			} else {
+	 				encheres.put(m.getConversationID(), value);
+	 				encherisseurs.put(m.getConversationID(), m.getSender()); 				
+	 			}
+	 		m = (StringMessage) nextMessage();
+	 	} 	
+		if (((int) Math.random()*10) == 0) {
+			broadcastMessage(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE, new StringMessage("ask"));					
+		}
 	}
-
 }
