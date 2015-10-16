@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import javax.swing.JFrame;
-
 import madkit.kernel.AbstractAgent;
 import madkit.kernel.Watcher;
 import madkit.simulation.probe.PropertyProbe;
@@ -18,6 +16,7 @@ import madkit.simulation.viewer.SwingViewer;
  * things already defined in {@link SwingViewer}. So why not use it.
  * 
  */
+@SuppressWarnings("serial")
 public class Viewer extends SwingViewer {
 
 	/**

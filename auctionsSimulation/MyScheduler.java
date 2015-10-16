@@ -18,9 +18,7 @@
  */
 package auctionsSimulation;
 
-import madkit.gui.ConsoleAgent;
 import madkit.kernel.AbstractAgent;
-import madkit.kernel.Madkit;
 import madkit.kernel.Scheduler;
 import madkit.simulation.activator.GenericBehaviorActivator;
 
@@ -35,11 +33,11 @@ import madkit.simulation.activator.GenericBehaviorActivator;
  */
 @SuppressWarnings("serial")
 public class MyScheduler extends Scheduler {
-	
+
 	protected GenericBehaviorActivator<AbstractAgent> pub_agents;
 	protected GenericBehaviorActivator<AbstractAgent> dsp_agents;
 	protected GenericBehaviorActivator<AbstractAgent> viewers;
-	
+
 	@Override
 	protected void activate() {
 
@@ -47,16 +45,16 @@ public class MyScheduler extends Scheduler {
 		requestRole(MySimulationModel.MY_COMMUNITY,
 				MySimulationModel.SIMU_GROUP,
 				MySimulationModel.SCH_ROLE); 
-		
+
 		// 3 : initialize the activators
 		// by default, they are activated once each in the order they have been added
-		pub_agents = new GenericBehaviorActivator<AbstractAgent>(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.PUB_ROLE, "askIt");
+		pub_agents = new GenericBehaviorActivator<AbstractAgent>(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.PUB_ROLE, "manageAds");
 		addActivator(pub_agents);
-		dsp_agents = new GenericBehaviorActivator<AbstractAgent>(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE, "answerIt");
+		dsp_agents = new GenericBehaviorActivator<AbstractAgent>(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE, "manageAuction");
 		addActivator(dsp_agents);
 		viewers = new GenericBehaviorActivator<AbstractAgent>(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.VIEWER_ROLE, "observe");
 		addActivator(viewers);
-		
+
 		setDelay(20);
 
 		//4 : let us start the simulation automatically

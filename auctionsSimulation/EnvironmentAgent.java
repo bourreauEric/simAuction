@@ -15,6 +15,7 @@ import madkit.simulation.probe.PropertyProbe;
  * the artificial society.
  * 
  */
+@SuppressWarnings("serial")
 public class EnvironmentAgent extends Watcher {
 	
 	/**

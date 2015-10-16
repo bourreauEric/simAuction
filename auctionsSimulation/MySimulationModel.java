@@ -30,6 +30,7 @@ import madkit.kernel.AbstractAgent;
  *  The display work is done in {@link Viewer}
  *  
  */
+@SuppressWarnings("serial")
 public class MySimulationModel extends AbstractAgent{
 
 	// Organizational constants
@@ -49,15 +50,13 @@ public class MySimulationModel extends AbstractAgent{
 		// 2 : create the environment
 		EnvironmentAgent environment = new EnvironmentAgent();
 		launchAgent(environment);
-		
+
 		// 3 : create the scheduler
 		MyScheduler scheduler = new MyScheduler();
 		launchAgent(scheduler,true);
 
-		// 3 : create the viewer
-		Viewer viewer= new Viewer();
-		launchAgent(viewer,true);
-		
+		new Viewer();
+
 		// 2 : launch some simulated agents
 		for (int i = 0; i < 1; i++) {
 			launchAgent(new PubAgent());
@@ -66,7 +65,7 @@ public class MySimulationModel extends AbstractAgent{
 			launchAgent(new DSPAgent());
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		executeThisAgent(1,false); //no gui for me
 	}
