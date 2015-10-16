@@ -22,14 +22,15 @@ import java.util.HashMap;
 
 import madkit.kernel.AbstractAgent;
 import madkit.kernel.AgentAddress;
+import madkit.kernel.ConversationID;
 import madkit.message.StringMessage;
 
 
 @SuppressWarnings("serial")
 public class PubAgent extends AbstractAgent {
 
-	private HashMap<Integer, Integer> auctionValues = new  HashMap<Integer, Integer>();
-	private HashMap<Integer, AgentAddress> auctionAgents = new  HashMap<Integer, AgentAddress>();
+	private HashMap<ConversationID, Integer> auctionValues = new  HashMap<ConversationID, Integer>();
+	private HashMap<ConversationID, AgentAddress> auctionAgents = new  HashMap<ConversationID, AgentAddress>();
 
 	/**
 	 * initialize my role and fields
