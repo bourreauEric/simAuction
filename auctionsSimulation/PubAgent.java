@@ -18,33 +18,19 @@
  */
 package auctionsSimulation;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import madkit.kernel.AbstractAgent;
 import madkit.kernel.AgentAddress;
-import madkit.kernel.ConversationID;
-import madkit.kernel.Message;
 import madkit.message.StringMessage;
 
-// VOCABULARY
-// ask
-// answer IntValue
-// win
 
+@SuppressWarnings("serial")
 public class PubAgent extends AbstractAgent {
-	
-	/**
-	 * The agent's environment. 
-	 * Here it is just used to know its boundaries. 
-	 * It will be automatically set
-	 * by the environment agent itself: No need to instantiate anything here.
-	 */
-	private EnvironmentAgent environment;
-	private HashMap<ConversationID, Integer> encheres = new  HashMap<ConversationID, Integer>();
-	private HashMap<ConversationID, AgentAddress> encherisseurs = new  HashMap<ConversationID, AgentAddress>();
-	
+
+	private HashMap<Integer, Integer> auctionValues = new  HashMap<Integer, Integer>();
+	private HashMap<Integer, AgentAddress> auctionAgents = new  HashMap<Integer, AgentAddress>();
+
 	/**
 	 * initialize my role and fields
 	 */
@@ -52,31 +38,35 @@ public class PubAgent extends AbstractAgent {
 	protected void activate() {
 		requestRole(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.PUB_ROLE);
 	}
-	
+
 	/**
 	 * A non sense behavior, just moving around.
 	 */
 	@SuppressWarnings("unused")
-	private void askIt() {
+	private void manageAds() {
 		Integer value,bestValue;
 		StringMessage m = (StringMessage) nextMessage();
-	 	while(m != null) {
-	 		if (m.getContent().startsWith("answer")) {
-	 			value = new Integer(Integer.parseInt(m.getContent().split(" ")[1]));
-	 			if (encheres.containsKey(m.getConversationID())) {
-		 		    bestValue = encheres.get(m.getConversationID());
-		 			if (bestValue < value) {
-		 				encheres.put(m.getConversationID(), value);
-		 				encherisseurs.put(m.getConversationID(), m.getSender()); 				
-		 			}
-	 			} else {
-	 				encheres.put(m.getConversationID(), value);
-	 				encherisseurs.put(m.getConversationID(), m.getSender()); 				
-	 			}
-	 		m = (StringMessage) nextMessage();
-	 	} 	
-		if (((int) Math.random()*10) == 0) {
-			broadcastMessage(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE, new StringMessage("ask"));					
+		int count = getAgentsWithRole(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE).size();
+		while(m != null) {
+			System.out.println("DSP"+m.getSender()+"->PA"+m.getReceiver()+": "+m.getContent());
+			if (m.getContent().startsWith("answer")) {
+				value = new Integer(Integer.parseInt(m.getContent().split(" ")[1]));
+				if (auctionValues.containsKey(m.getConversationID())) {
+					bestValue = auctionValues.get(m.getConversationID());
+					if (bestValue < value) {
+						auctionValues.put(m.getConversationID(), value);
+						auctionAgents.put(m.getConversationID(), m.getSender()); 				
+					}
+				} else {
+					auctionValues.put(m.getConversationID(), value);
+					auctionAgents.put(m.getConversationID(), m.getSender()); 				
+				}
+				m = (StringMessage) nextMessage();
+			}
+		}
+		if (((int) (Math.random()*100)) == 0) {
+			broadcastMessage(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE, new StringMessage("ask"));
+			System.out.println("new ask from PubAgent");
 		}
 	}
 }

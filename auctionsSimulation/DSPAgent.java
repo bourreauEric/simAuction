@@ -18,18 +18,12 @@
  */
 package auctionsSimulation;
 
-import java.awt.Dimension;
-
 import madkit.kernel.AbstractAgent;
-import madkit.kernel.Message;
 import madkit.message.StringMessage;
 
-import java.util.ArrayList;
-
-import com.sun.corba.se.impl.protocol.giopmsgheaders.ReplyMessage;
-
+@SuppressWarnings("serial")
 public class DSPAgent extends AbstractAgent {
-	
+
 	/**
 	 * The agent's environment. 
 	 * Here it is just used to know its boundaries. 
@@ -37,34 +31,30 @@ public class DSPAgent extends AbstractAgent {
 	 * by the environment agent itself: No need to instantiate anything here.
 	 */
 	private EnvironmentAgent environment;
-	
-	/**
-	 * agent's position
-	 */
-	private ArrayList<Dimension> locations = new ArrayList<Dimension>();
-	
+
 	/**
 	 * initialize my role and fields
 	 */
 	@Override
 	protected void activate() {
 		requestRole(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE);
-		Dimension envDim = environment.getDimension();
+		environment.getDimension();
 	}
-	
+
 	/**
 	 *  Réponse à l'enchère
 	 */
 	@SuppressWarnings("unused")
-	private void answerIt() {
+	private void manageAuction() {
 		StringMessage m = (StringMessage) nextMessage();
-	 	while(m != null) {
-	 		if (m.getContent() == "win") {
-	 			m.getConversationID();
-	 		} else {
-	 			sendReply(m, new StringMessage("answer "+((int)Math.random()*4)));
-	 		}
-	 		m = (StringMessage) nextMessage();
-	 	} 	
+		while(m != null) {
+			System.out.println("PA"+m.getSender()+"->DSP"+m.getReceiver()+": "+m.getContent());
+			if (m.getContent() == "win") {
+				m.getConversationID();
+			} else {
+				sendReply(m, new StringMessage("answer "+((int)(Math.random()*1))));
+			}
+			m = (StringMessage) nextMessage();
+		} 	
 	}
 }
