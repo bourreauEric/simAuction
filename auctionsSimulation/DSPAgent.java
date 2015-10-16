@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Fabien Michel
+ * Copyright 2011-2012 Fabien & Eric
  * 
  * This file is part of MaDKit-tutorials.
  * 
@@ -42,7 +42,7 @@ public class DSPAgent extends AbstractAgent {
 	}
 
 	/**
-	 *  Réponse à l'enchère
+	 *  Bid response
 	 */
 	@SuppressWarnings("unused")
 	private void manageAuction() {
