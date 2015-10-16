@@ -18,8 +18,14 @@
  */
 package auctionsSimulation;
 
+import java.lang.invoke.SwitchPoint;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import madkit.kernel.ConversationID;
 import madkit.kernel.AbstractAgent;
 import madkit.message.StringMessage;
+
 
 @SuppressWarnings("serial")
 public class DSPAgent extends AbstractAgent {
@@ -31,12 +37,16 @@ public class DSPAgent extends AbstractAgent {
 	 * by the environment agent itself: No need to instantiate anything here.
 	 */
 	private EnvironmentAgent environment;
+	private HashMap<ConversationID, Integer> bidHistory = new HashMap<ConversationID, Integer>();
+	private Integer budget;
+
 
 	/**
 	 * initialize my role and fields
 	 */
 	@Override
 	protected void activate() {
+		budget = 1000;
 		requestRole(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.DSP_ROLE);
 		environment.getDimension();
 	}
@@ -47,13 +57,28 @@ public class DSPAgent extends AbstractAgent {
 	@SuppressWarnings("unused")
 	private void manageAuction() {
 		StringMessage m = (StringMessage) nextMessage();
+		// while message in our mailbox
 		while(m != null) {
 			System.out.println("PA"+m.getSender()+"->DSP"+m.getReceiver()+": "+m.getContent());
-			if (m.getContent() == "win") {
-				m.getConversationID();
-			} else {
-				sendReply(m, new StringMessage("answer "+((int)(Math.random()*1))));
+			String[] msgArray = m.getContent().split(" ");
+
+			// switching according to first part of message content
+			switch (msgArray[0]) {
+
+			// we have a proposition we answer
+			case "askForBid":
+				int bid = Math.min(budget, (int)(Math.random()*100));
+				bidHistory.put(m.getConversationID(), bid);
+				sendReply(m, new StringMessage("answerBid " + bid));
+				break;
+
+				// we won the competition!
+			case "winBid":
+				budget -= Integer.parseInt(msgArray[1]);
+				System.out.println("new budget: "+budget);
+				break;
 			}
+
 			m = (StringMessage) nextMessage();
 		} 	
 	}

@@ -40,13 +40,12 @@ public class MyScheduler extends Scheduler {
 
 	@Override
 	protected void activate() {
-
 		// 1 : request my role
 		requestRole(MySimulationModel.MY_COMMUNITY,
 				MySimulationModel.SIMU_GROUP,
 				MySimulationModel.SCH_ROLE); 
 
-		// 3 : initialize the activators
+		// 2 : initialize the activators
 		// by default, they are activated once each in the order they have been added
 		pub_agents = new GenericBehaviorActivator<AbstractAgent>(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.PUB_ROLE, "manageAds");
 		addActivator(pub_agents);
@@ -55,10 +54,11 @@ public class MyScheduler extends Scheduler {
 		viewers = new GenericBehaviorActivator<AbstractAgent>(MySimulationModel.MY_COMMUNITY, MySimulationModel.SIMU_GROUP, MySimulationModel.VIEWER_ROLE, "observe");
 		addActivator(viewers);
 
-		setDelay(20);
-
-		//4 : let us start the simulation automatically
+		// 3 : let us start the simulation automatically
 		setSimulationState(SimulationState.RUNNING);
+
+		// 4 : delay
+		setDelay(20);
 	}
 
 }

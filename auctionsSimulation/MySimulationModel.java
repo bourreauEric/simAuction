@@ -67,6 +67,6 @@ public class MySimulationModel extends AbstractAgent{
 	}
 
 	public static void main(String[] args) {
-		executeThisAgent(1,false); //no gui for me
+		executeThisAgent(1, false); //no gui for me
 	}
 }
