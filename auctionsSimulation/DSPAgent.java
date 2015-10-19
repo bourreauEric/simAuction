@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 Fabien & Eric
+ * Copyright 2015 Eric Bourreau & Fabien Hervouet
  * 
  * This file is part of SimAuction.
  * 
